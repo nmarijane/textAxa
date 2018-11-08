@@ -12,6 +12,12 @@ Start Api
 npm run start-api
 ```
 
+Start Api which response with delay (10s)
+
+```bash
+npm run delay-api
+```
+
 Start Server
 
 ```bash

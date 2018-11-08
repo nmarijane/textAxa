@@ -8,6 +8,7 @@
     "dev": "nodemon",
     "watch": "webpack --watch",
     "start-api": "json-server ./api.js",
+    "delay-api": "json-server ./api.js --delay 10000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
