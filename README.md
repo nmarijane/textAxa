@@ -34,7 +34,7 @@ $> curl http://localhost:3000/stocks?_limit=10
 To load all available stock value samples :
 
 ```console
-$> curl http://localhost:3000
+$> curl http://localhost:3000/stocks
 ```
 
 Queries return a JSON array of stock samples :
