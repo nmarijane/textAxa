@@ -1,6 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
+  template: path.join(__dirname, "./front/index.html"),
+});
 
 module.exports = {
   entry: ["babel-polyfill", "./front/index.js", "./front/index.scss"],
@@ -35,5 +39,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin("index.css")]
+  plugins: [new ExtractTextPlugin("index.css"), HTMLWebpackPluginConfig]
 };
