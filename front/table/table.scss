@@ -1,0 +1,11 @@
+.transparentInput:disabled {
+  border: none !important;
+  background: transparent !important;
+  text-align: center;
+  cursor: pointer;
+}
+
+.transparentInput:enabled {
+  border: none !important;
+  text-align: center;
+}
