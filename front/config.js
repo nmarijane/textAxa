@@ -1,8 +1,7 @@
-
 export const MESSAGES = Object.freeze({
-  ERROR: "Le service est momentanément indisponible",
-  LOADING: "Chargement des données...",
-  });
+    ERROR: "Le service est momentanément indisponible",
+    LOADING: "Chargement des données...",
+});
 
 export const URL_BASE = "http://localhost";
 export const PORT = "3000";
