@@ -5,6 +5,24 @@ main > .container {
   padding: 60px 15px 0;
 }
 
+.text-blue {
+  color: #00008f !important;
+}
+
+h2 {
+  color: #00008f !important;
+  font-weight: 400 !important;
+  font-size: 2.8rem !important;
+  line-height: 4.2rem !important;
+}
+
+.navbar {
+  text-transform: uppercase;
+  border-top: 4px solid #00008f;
+  border-bottom: 1px solid #ccc;
+  background: #fbfbfb;
+}
+
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
@@ -139,3 +157,19 @@ main > .container {
   bottom: 0;
   right: 0;
 }
+
+.error-template {
+  position: fixed;
+  z-index: 999;
+  width: 600px;
+  height: 400px;
+  overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+}
+.error-actions {margin-top:15px;margin-bottom:15px;}
+.error-actions .btn { margin-right:10px; }

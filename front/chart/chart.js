@@ -12,6 +12,8 @@ class Chart extends Component {
     }
 
     componentDidUpdate() {
+        // empty the chart before creating a new one
+        d3.select('svg').html("");
         this.createLineChart();
     }
 
@@ -21,9 +23,6 @@ class Chart extends Component {
         const margin = {top: 20, right: 20, bottom: 30, left: 50};
         const width = svgWidth - margin.left - margin.right;
         const height = svgHeight - margin.top - margin.bottom;
-
-        // empty the chart before creating a new one
-        d3.select('svg').html("");
 
         const svg = d3.select('svg')
             .attr("width", svgWidth)
@@ -77,7 +76,7 @@ class Chart extends Component {
 
     render() {
         return <div>
-            <h1>Stocks</h1>
+            <h2 className="title-lg">Stocks stats</h2>
             <svg width={800}
                  height={400}>
             </svg>

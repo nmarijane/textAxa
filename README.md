@@ -61,3 +61,13 @@ Queries return a JSON array of stock samples :
   }
 ];
 ```
+
+```
+NEW FEATURES
+```
+IHM
+- Feature : Can update the array of stocks and refresh Chart
+- Handle 404, 500, 403 errors with node Router
+- Add bootstrap css
+- Add d3js library
+- Handle back error when not responding

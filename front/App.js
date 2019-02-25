@@ -52,7 +52,7 @@ class App extends Component {
         } else if (!isLoaded) {
             return <div className="loading">{MESSAGES.LOADING}</div>;
         } else {
-            return <div className="py-5 text-center">
+            return <div className="text-center">
                 <Chart items={items}/>
                 <StatsTable items={items} onTableStocksChange={this.handleTableStocksChange}/>
             </div>;

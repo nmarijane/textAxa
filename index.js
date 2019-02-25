@@ -1,6 +1,9 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import path from "path";
+import 'babel-polyfill';
+import './app/routes';
+import appRouter from "./app/routes";
 
 const app = express();
 
@@ -15,7 +18,7 @@ app.use(
   express.static(path.join(__dirname, "/.public"), { maxAge: 31536000000 })
 );
 
-app.use(require("./app/routes")(app));
+app.use(appRouter);
 
 app.listen(1337, () => {
   console.log(`Server started ➜ http://localhost:1337`);
