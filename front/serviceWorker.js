@@ -42,7 +42,7 @@ export function register(config) {
                 // service worker/PWA documentation.
                 navigator.serviceWorker.ready.then(() => {
                     console.log(
-                        'This web app is being served cache-first by a service ' +
+                        'This web app is being served Cache-first by a service ' +
                         'worker. To learn more, visit http://bit.ly/CRA-PWA'
                     );
                 });
