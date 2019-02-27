@@ -4,13 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node -r babel-register index.js",
+    "start": "webpack && node -r @babel/register index.js",
     "dev": "nodemon",
     "watch": "webpack --watch",
     "start-api": "json-server ./api.js",
     "delay-api": "json-server ./api.js --delay 10000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "setupFiles": [
+    "./front/setupTests.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Julien-Decoen/rest-api-test.git"
@@ -22,9 +31,8 @@
   },
   "homepage": "https://github.com/Julien-Decoen/rest-api-test#readme",
   "dependencies": {
-    "babel-loader": "^7.1.2",
+    "@babel/runtime": "^7.3.4",
     "body-parser": "^1.18.3",
-    "cachegoose": "^8.0.0",
     "css-loader": "^1.0.1",
     "d3": "^5.9.1",
     "d3-selection": "^1.4.0",
@@ -33,29 +41,39 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "json-server": "^0.14.0",
     "memory-cache": "^0.2.0",
-    "mongoose": "^5.4.15",
-    "node-cache": "^4.2.0",
     "node-sass": "^4.10.0",
     "nunjucks": "^3.1.3",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-toastify": "^4.5.2",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.23.1",
-    "webpack": "^3.8.1"
+    "style-loader": "^0.23.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-stage-0": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "axios": "^0.16.2",
-    "babel-cli": "^6.26.0",
+    "babel-jest": "^24.1.0",
+    "babel-loader": "^8.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.10.0",
+    "enzyme-to-json": "^3.3.5",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.1.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.6",
+    "webpack": "^3.12.0",
     "webpack-cli": "^3.1.2"
   },
   "nodemonConfig": {
@@ -67,7 +85,7 @@
     ],
     "verbose": true,
     "execMap": {
-      "js": "node -r babel-register index.js"
+      "js": "node -r @babel/register index.js"
     },
     "events": {
       "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"

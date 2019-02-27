@@ -1,5 +1,7 @@
 @import "chart/chart";
 @import "table/table";
+@import url(bootstrap.min.css);
+@import url(../node_modules/react-toastify/dist/ReactToastify.css);
 
 main > .container {
   padding: 60px 15px 0;

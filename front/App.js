@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import StatsTable from "./table/table";
 import Chart from "./chart/chart";
 import {API_BASE_URL, MESSAGES} from "../common/constants";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default class App extends Component {
+
     constructor(props) {
         super(props);
         this.handleTableStocksChange = this.handleTableStocksChange.bind(this);
@@ -28,20 +30,20 @@ export default class App extends Component {
                         items: result
                     });
                 },
-                (err) => {
+                () => {
                     this.setState({
                         isLoaded: true,
-                        error: err
+                        error: MESSAGES.ERROR
                     });
                 }
             ).catch(
-            (err) => {
+            () => {
                 this.setState({
                     isLoaded: true,
                     error: MESSAGES.ERROR
                 });
             }
-            );
+        );
     }
 
     componentDidMount() {
@@ -50,17 +52,22 @@ export default class App extends Component {
 
     render() {
         const {error, isLoaded, items} = this.state;
+        let content = '';
         if (error) {
-            return <div className="alert alert-danger error" role="alert">
-                {error}
-            </div>;
+            toast.error('Une erreur est survenue : ' + error, {
+                position: toast.POSITION.TOP_CENTER
+            });
         } else if (!isLoaded) {
-            return <div className="loading">{MESSAGES.LOADING}</div>;
+            content = <div className="loading">{MESSAGES.LOADING}</div>;
         } else {
-            return <div className="text-center">
+            content = <div className="text-center">
                 <Chart items={items}/>
                 <StatsTable items={items} onTableStocksChange={this.handleTableStocksChange}/>
             </div>;
         }
+        return <div>
+            <ToastContainer autoClose={20000}/>
+            {content}
+        </div>
     }
 }
