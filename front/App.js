@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import StatsTable from "./table/table";
-import {API_BASE_URL, API_STOCK, MESSAGES} from "./config";
 import Chart from "./chart/chart";
+import {API_BASE_URL, MESSAGES} from "../common/constants";
 
-class App extends Component {
+export default class App extends Component {
     constructor(props) {
         super(props);
         this.handleTableStocksChange = this.handleTableStocksChange.bind(this);
@@ -18,29 +18,34 @@ class App extends Component {
         this.setState({items: items});
     }
 
-    componentDidMount() {
-        fetch(API_BASE_URL + API_STOCK + "?_limit=20")
+    getStock() {
+        fetch(API_BASE_URL + "/stocks?limit=20", {mode: 'cors', method: 'GET'})
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        items: result.map((item) => {
-                            return {
-                                index: item.index,
-                                date: new Date(item.timestamp),
-                                value: item.stocks,
-                            };
-                        })
+                        items: result
                     });
                 },
-                () => {
+                (err) => {
                     this.setState({
                         isLoaded: true,
-                        error: MESSAGES.ERROR
+                        error: err
                     });
                 }
-            )
+            ).catch(
+            (err) => {
+                this.setState({
+                    isLoaded: true,
+                    error: MESSAGES.ERROR
+                });
+            }
+            );
+    }
+
+    componentDidMount() {
+        this.getStock();
     }
 
     render() {
@@ -52,12 +57,10 @@ class App extends Component {
         } else if (!isLoaded) {
             return <div className="loading">{MESSAGES.LOADING}</div>;
         } else {
-            return <div className="py-5 text-center">
+            return <div className="text-center">
                 <Chart items={items}/>
                 <StatsTable items={items} onTableStocksChange={this.handleTableStocksChange}/>
             </div>;
         }
     }
 }
-
-export default App;

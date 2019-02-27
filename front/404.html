@@ -14,7 +14,7 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md fixed-top text-blue">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger active" href="./">Test Nicolas Meridjen AXA</a>
+            <a class="navbar-brand js-scroll-trigger" href="./">Test Nicolas Meridjen AXA</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -25,13 +25,25 @@
         </div>
     </nav>
 </header>
-<!-- Begin page content -->
-<main class="flex-shrink-0" role="main">
-    <div class="container">
-        <div id="root"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    La page que vous avez demandée n'existe pas !</h1>
+                <br>
+                <h2>404 Not Found</h2>
+                <br>
+                <div class="error-details">
+                    Sorry, an error has occured, Requested page not found!
+                </div>
+                <div class="error-actions">
+                    <a href="./" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-home"></span>Revenir à l'accueil</a>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
-<!-- Page Content -->
+</div>
 
 <script src="base/index.js" type="text/javascript"></script>
 </body>

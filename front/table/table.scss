@@ -11,5 +11,13 @@
 }
 
 .transparentInput:focus {
-  border: 2px #bf7300 !important;
+  -webkit-box-shadow: inset 1px 1px 1px #bf7300;
+  -moz-box-shadow: inset 1px 1px 1px #bf7300;
+  box-shadow: inset 1px 1px 1px #bf7300;
+  background-color: #d0b35d;
+}
+
+.table-sm td, .table-sm th {
+  padding-top: .1rem;
+  padding-bottom: .1rem;
 }

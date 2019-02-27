@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
 import * as d3 from "d3";
 
-class Chart extends Component {
+/**
+ * @class Chart
+ * @description Represents the Chart component.
+ * @requires Requires stock items in the props to work properly
+ * */
+export default class Chart extends Component {
     constructor(props) {
         super(props);
         this.createLineChart = this.createLineChart.bind(this);
@@ -12,6 +17,8 @@ class Chart extends Component {
     }
 
     componentDidUpdate() {
+        // empty the chart before creating a new one
+        d3.select('svg').html("");
         this.createLineChart();
     }
 
@@ -21,9 +28,6 @@ class Chart extends Component {
         const margin = {top: 20, right: 20, bottom: 30, left: 50};
         const width = svgWidth - margin.left - margin.right;
         const height = svgHeight - margin.top - margin.bottom;
-
-        // empty the chart before creating a new one
-        d3.select('svg').html("");
 
         const svg = d3.select('svg')
             .attr("width", svgWidth)
@@ -39,14 +43,14 @@ class Chart extends Component {
             .rangeRound([height, 0]);
 
         const line = d3.line()
-            .x((d) => x(d.date))
-            .y((d) => y(d.value))
+            .x((d) => x(new Date(d.date)))
+            .y((d) => y(d.value ? d.value : 0))
             .curve(d3.curveCatmullRom.alpha(0.5));
 
         //define the x range
-        x.domain(d3.extent(data, (d) => d.date));
+        x.domain(d3.extent(data, (d) => new Date(d.date)));
         //define the y ranger with start at 0 and max at item.value max +5 (to look better)
-        y.domain([0, Math.max.apply(Math, data.map(item => item.value)) + 5]);
+        y.domain([0, Math.max.apply(Math, data.map(item => item.value ? item.value : 0)) + 5]);
 
         g.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -77,12 +81,10 @@ class Chart extends Component {
 
     render() {
         return <div>
-            <h1>Stocks</h1>
+            <h2 className="title-lg">Stocks stats</h2>
             <svg width={800}
                  height={400}>
             </svg>
         </div>;
     }
 }
-
-export default Chart;

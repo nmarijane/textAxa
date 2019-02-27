@@ -4,8 +4,8 @@ module.exports = () => {
   // Create 1000 users
   for (let i = 0; i < 100; i++) {
     data.stocks.push({
+      id: i,
       timestamp: new Date(new Date().setDate(new Date().getDate() - i)),
-      index: i,
       stocks: `${(Math.random() * 10 + 15 - (i / 100) * 15).toFixed(3)}`
     });
   }
