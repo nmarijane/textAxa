@@ -3,6 +3,7 @@ import {FAKESERVER_BASE_URL} from "../common/constants";
 
 /**** URL SPECIFIC API *****/
 const API_STOCK = FAKESERVER_BASE_URL + "/stocks";
+const ttl = 120; // seconds
 
 export default class StockController {
 //we are using Axio to be able to use promises on our requests
