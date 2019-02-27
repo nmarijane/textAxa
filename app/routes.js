@@ -1,10 +1,50 @@
 import express from "express";
 import {green} from "../common/constants";
 import {getStocks, updateStock} from "../back/stock.controller";
-import {cacheMiddleware, stocksCacheId} from "../common/cache.service";
+import cache from "memory-cache";
 
 const appRouter = express.Router();
 
+
+/***********************/
+/****CACHE MIDDLEWARE***/
+/***********************/
+/**
+ * @describe('cacheMiddleware', function() {
+   Use to store in cache memory
+ });
+ * @type {Cache}
+ */
+let memCache = new cache.Cache();
+let cacheMiddleware = (duration, key) => {
+    return (req, res, next) => {
+        let key = key;
+        let cacheContent = memCache.get(key);
+        if(cacheContent){
+            console.log('Cache used');
+            res.send( cacheContent );
+        }else{
+            res.sendResponse = res.send;
+            res.send = (body) => {
+                memCache.put(key,body,duration*1000);
+                res.sendResponse(body)
+            };
+            next()
+        }
+    }
+};
+
+// function to clean cache code
+export const cleanStockCache = () => {
+    let cacheContent = memCache.get(stocksCacheId);
+    if (cacheContent) {
+        console.log(green, 'CLEAN CACHE');
+        cacheContent.clean();
+    }
+};
+
+//key of the stock cache get request
+const stocksCacheId = 'stocksCache';
 
 /***********************/
 /****   APP ROUTES   ***/
@@ -34,7 +74,6 @@ appRouter.get('/stocks', cacheMiddleware(30, stocksCacheId), (req, res) => {
     console.log(green, '[ GET ] /allstocks');
     getStocks(req, res);
 });
-
 /**
  * @api {get} / Update the stock by Id
  * @apiName Update

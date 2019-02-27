@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {FAKESERVER_BASE_URL, MESSAGES} from "../common/constants";
-import {cleanStockCache} from "../common/cache.service";
+import {FAKESERVER_BASE_URL} from "../common/constants";
+import {cleanStockCache} from "../app/routes";
 
 /**** URL SPECIFIC API *****/
 const API_STOCK = FAKESERVER_BASE_URL + "/stocks";
@@ -38,10 +38,9 @@ const config = {
             res.send(stocks);
             console.log('Return stocks');
         } catch (err) {
+            cleanStockCache();
             res.send(err);
             console.error(err);
-            // we don't want to have an error array in cache
-            cleanStockCache();
         }
     };
 
@@ -55,15 +54,12 @@ const config = {
         try {
             console.log('Updating a stock...');
             const response = await axios.put(API_STOCK + "/" + req.body.id, req.body);
+            cleanStockCache();
             res.send(response.data);
             console.info(response.data);
 
         } catch (err) {
             res.send(err);
             console.error(err);
-        } finally {
-            //we clean cache after modification on data, even if the is an error
-            // we don't want to have an error array in cache
-            cleanStockCache();
         }
     };

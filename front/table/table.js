@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import dateFormat from 'dateformat';
 import {API_BASE_URL} from "../../common/constants";
-import { ToastContainer, toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 /**
  * @class StatsTable
@@ -21,12 +21,6 @@ export default class StatsTable extends Component {
         event.target.focus();
     }
 
-    handleKeyPress(event, index) {
-        if (event.key === 'Enter') {
-            this.updateStock(index, event.target);
-        }
-
-    }
     handleMouseLeave(event, index) {
         console.log(index);
             this.updateStock(index, event.target);
@@ -49,10 +43,13 @@ export default class StatsTable extends Component {
                     stocks: item.value,
                 })
             }).then(res => {
+                toast.success('Stock enregistrée avec succès : ', {
+                    position: toast.POSITION.TOP_CENTER,
+                });
             // if update was successful, leave the input
         }).catch(err => {
             console.log(err);
-            toast.error('Error updating stock ! ' + <br/>, {
+            toast.error('Error updating stock ! ', {
                 position: toast.POSITION.TOP_LEFT
             });
             }
@@ -101,10 +98,7 @@ export default class StatsTable extends Component {
                                onChange={(e) => {
                                    this.changeItem(e, i)
                                }}
-                               onKeyPress={(e, key) => {
-                                   this.handleKeyPress(e, i)
-                               }}
-                               onBlur={(e, key) => {
+                               onBlur={(e) => {
                                    this.handleMouseLeave(e, i);
                                }}
                                disabled

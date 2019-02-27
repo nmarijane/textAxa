@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import StatsTable from "./table/table";
 import Chart from "./chart/chart";
 import {API_BASE_URL, MESSAGES} from "../common/constants";
-import { ToastContainer, toast } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 
 export default class App extends Component {
 
