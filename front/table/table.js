@@ -90,7 +90,7 @@ export default class StatsTable extends Component {
                 <tr key={"ln" + i} onClick={(e) => {this.turnIntoInput(e, i)}}>
                     <td>{dateFormat(itm.date, "dd/mm/yyyy")}</td>
                     <td>
-                        <input type="text"
+                        <input type="number"
                                key={"i" + i}
                                value={itm.value}
                                className="transparentInput"
