@@ -3,8 +3,8 @@ SET UP A CONFIGURATION FILE THAT CONTAIN OUR CONST
  * */
 
 export const MESSAGES = Object.freeze({
-    ERROR: "Le service est momentanément indisponible",
-    LOADING: "Chargement des données...",
+    ERROR: 'Le service est momentanément indisponible',
+    LOADING: 'Chargement des données...',
 });
 
 /**** URL BASE API *****/

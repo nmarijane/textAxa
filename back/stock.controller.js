@@ -1,10 +1,15 @@
 import axios from 'axios';
-import {FAKESERVER_BASE_URL} from "../common/constants";
+import {FAKESERVER_BASE_URL, MESSAGES} from "../common/constants";
+import {cleanStockCache} from "../common/cache.service";
 
 /**** URL SPECIFIC API *****/
 const API_STOCK = FAKESERVER_BASE_URL + "/stocks";
-
-export default class StockController {
+const config = {
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+    }
+};
 //we are using Axio to be able to use promises on our requests
 //we also use async/await syntax which is more comfortable to play with promises
 
@@ -14,14 +19,14 @@ export default class StockController {
      * @param res: response returned to the front
      * @description Get All the stock without any limits
      * */
-    static getStocks = async (req, res) => {
+    export const getStocks = async (req, res) => {
         try {
             console.log('Loading all stocks...', API_STOCK, req.query);
             let query = '';
             if (req.query && req.query.limit) {
                 query = '?_limit=' + req.query.limit;
             }
-            const response = await axios.get(API_STOCK + query);
+            const response = await axios.get(API_STOCK + query, config);
             //map the data as we want
             const stocks = response.data.map((item) => {
                 return {
@@ -33,7 +38,10 @@ export default class StockController {
             res.send(stocks);
             console.log('Return stocks');
         } catch (err) {
+            res.send(err);
             console.error(err);
+            // we don't want to have an error array in cache
+            cleanStockCache();
         }
     };
 
@@ -43,7 +51,7 @@ export default class StockController {
      * @param res: response returned to the front
      * @description Update the stock
      * */
-    static updateStock = async (req, res) => {
+    export const updateStock = async (req, res) => {
         try {
             console.log('Updating a stock...');
             const response = await axios.put(API_STOCK + "/" + req.body.id, req.body);
@@ -51,7 +59,11 @@ export default class StockController {
             console.info(response.data);
 
         } catch (err) {
+            res.send(err);
             console.error(err);
+        } finally {
+            //we clean cache after modification on data, even if the is an error
+            // we don't want to have an error array in cache
+            cleanStockCache();
         }
     };
-}

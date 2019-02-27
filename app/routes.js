@@ -1,7 +1,10 @@
 import express from "express";
 import {green} from "../common/constants";
-import StockController from "../back/stock.controller";
+import {getStocks, updateStock} from "../back/stock.controller";
+import {cacheMiddleware, stocksCacheId} from "../common/cache.service";
+
 const appRouter = express.Router();
+
 
 /***********************/
 /****   APP ROUTES   ***/
@@ -24,10 +27,12 @@ appRouter.get('/', function(req, res) {
  * @apiGroup Stock
  * @apiSuccess {stocks: []} Array of stocks
  **/
-appRouter.get('/stocks', (req, res) => {
+// cacheMiddleware is used for cache management
+// we won't do the request if data didn't change
+appRouter.get('/stocks', cacheMiddleware(30, stocksCacheId), (req, res) => {
     // console logger for node server
     console.log(green, '[ GET ] /allstocks');
-    StockController.getStocks(req, res);
+    getStocks(req, res);
 });
 
 /**
@@ -37,10 +42,9 @@ appRouter.get('/stocks', (req, res) => {
  * @apiSuccess {String} message Stock updated successfully
  **/
 appRouter.put('/stocks/:id', (req, res) => {
-    console.log('body', req.body);
     // console logger for node server
-    console.log(green, '[ GET ] /stocks/:id');
-    StockController.updateStock(req, res);
+    console.log(green, '[ PUT ] /stocks/:id');
+    updateStock(req, res, stocksCacheId);
 });
 
 /**

@@ -1,7 +1,6 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import path from "path";
-import 'babel-polyfill';
 import './app/routes';
 import appRouter from "./app/routes";
 import errorRouter from "./app/error_routes";
@@ -16,18 +15,6 @@ nunjucks.configure(path.join(__dirname, "./front"), {
   express: app
 });
 
-// parse application/json
-app.use(bodyParser.json());
-
-// Add headers
-app.use(function (req, res, next) {
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.set('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.set('Access-Control-Allow-Credentials', true);
-    next();
-});
-
 //define a timeout and catch the error
 app.use(function (req, res, next) {
     res.setTimeout(10000, function(){
@@ -35,6 +22,22 @@ app.use(function (req, res, next) {
         res.sendStatus(408);
     });
     next();
+});
+
+// parse application/json
+app.use(bodyParser.json());
+// Add headers
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    if ('OPTIONS' === req.method) {
+        res.send(200);
+    }
+    else {
+        next();
+    }
 });
 
 app.use(

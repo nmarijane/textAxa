@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import dateFormat from 'dateformat';
 import {API_BASE_URL} from "../../common/constants";
+import { ToastContainer, toast } from 'react-toastify';
 
 /**
  * @class StatsTable
@@ -24,7 +25,13 @@ export default class StatsTable extends Component {
         if (event.key === 'Enter') {
             this.updateStock(index, event.target);
         }
+
     }
+    handleMouseLeave(event, index) {
+        console.log(index);
+            this.updateStock(index, event.target);
+    }
+
 
     updateStock(index, input) {
         const item = this.state.items.find(res => res.id === index);
@@ -44,7 +51,10 @@ export default class StatsTable extends Component {
             }).then(res => {
             // if update was successful, leave the input
         }).catch(err => {
-                console.log(err);
+            console.log(err);
+            toast.error('Error updating stock ! ' + <br/>, {
+                position: toast.POSITION.TOP_LEFT
+            });
             }
         );
     }
@@ -81,8 +91,8 @@ export default class StatsTable extends Component {
             const i = itm.id;
             return (
                 <tr key={"ln" + i} onClick={(e) => {this.turnIntoInput(e, i)}}>
-                    <td key={"dt" + i}>{dateFormat(itm.date, "dd/mm/yyyy")}</td>
-                    <td key={"sk" + i}>
+                    <td>{dateFormat(itm.date, "dd/mm/yyyy")}</td>
+                    <td>
                         <input type="text"
                                key={"i" + i}
                                value={itm.value}
@@ -91,8 +101,11 @@ export default class StatsTable extends Component {
                                onChange={(e) => {
                                    this.changeItem(e, i)
                                }}
-                               onKeyPress={(e) => {
+                               onKeyPress={(e, key) => {
                                    this.handleKeyPress(e, i)
+                               }}
+                               onBlur={(e, key) => {
+                                   this.handleMouseLeave(e, i);
                                }}
                                disabled
                         />
