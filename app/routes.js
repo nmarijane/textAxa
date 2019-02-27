@@ -5,7 +5,6 @@ import cache from "memory-cache";
 
 const appRouter = express.Router();
 
-
 /***********************/
 /****CACHE MIDDLEWARE***/
 /***********************/
@@ -16,9 +15,9 @@ const appRouter = express.Router();
  * @type {Cache}
  */
 let memCache = new cache.Cache();
-let cacheMiddleware = (duration, key) => {
+let cacheMiddleware = (duration, keyId) => {
     return (req, res, next) => {
-        let key = key;
+        let key = keyId;
         let cacheContent = memCache.get(key);
         if(cacheContent){
             console.log('Cache used');
@@ -31,15 +30,6 @@ let cacheMiddleware = (duration, key) => {
             };
             next()
         }
-    }
-};
-
-// function to clean cache code
-export const cleanStockCache = () => {
-    let cacheContent = memCache.get(stocksCacheId);
-    if (cacheContent) {
-        console.log(green, 'CLEAN CACHE');
-        cacheContent.clean();
     }
 };
 
@@ -83,7 +73,9 @@ appRouter.get('/stocks', cacheMiddleware(30, stocksCacheId), (req, res) => {
 appRouter.put('/stocks/:id', (req, res) => {
     // console logger for node server
     console.log(green, '[ PUT ] /stocks/:id');
-    updateStock(req, res, stocksCacheId);
+    updateStock(req, res);
+    const cacheContent = memCache.del(stocksCacheId);
+    console.log(green, 'CLEAN CACHE', cacheContent);
 });
 
 /**
