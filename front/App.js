@@ -4,8 +4,16 @@ import Chart from "./chart/chart";
 import {API_BASE_URL, MESSAGES} from "../common/constants";
 import {toast, ToastContainer} from 'react-toastify';
 
+/** Represents the root component displayed in index.html.
+ * @class App
+ * @extends Component
+ * */
 export default class App extends Component {
-
+    /**
+     * Initialization
+     * @constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.handleTableStocksChange = this.handleTableStocksChange.bind(this);
@@ -16,10 +24,19 @@ export default class App extends Component {
         };
     }
 
+    /**
+     * Enable input and focus into it
+     * @function handleTableStocksChange
+     * @param {object[]} items - array of stocks
+     */
     handleTableStocksChange(items) {
         this.setState({items: items});
     }
 
+    /**
+     * Get stocks from our server and handle errors
+     * @function getStock
+     */
     getStock() {
         fetch(API_BASE_URL + "/stocks?limit=20", {mode: 'cors', method: 'GET'})
             .then(res => res.json())
@@ -46,6 +63,9 @@ export default class App extends Component {
         );
     }
 
+    /** Get stocks when component is fully mounted
+     * @function componentDidMount
+     */
     componentDidMount() {
         this.getStock();
     }

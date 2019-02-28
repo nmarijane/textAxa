@@ -1,27 +1,40 @@
 import React, {Component} from 'react';
 import * as d3 from "d3";
 
-/**
+/** Represents the chart component made by d3js.
  * @class Chart
- * @description Represents the Chart component.
- * @requires Requires stock items in the props to work properly
+ * @extends Component
  * */
 export default class Chart extends Component {
+    /**
+     * Initialization
+     * @constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.createLineChart = this.createLineChart.bind(this);
     }
 
+    /** Call chart builder when component is fully mounted
+     * @function componentDidMount
+     */
     componentDidMount() {
         this.createLineChart();
     }
 
+    /** Recreate chart when props are updated
+     * @function componentDidUpdate
+     */
     componentDidUpdate() {
         // empty the chart before creating a new one
         d3.select('svg').html("");
         this.createLineChart();
     }
 
+    /** Create line chart with props
+     * @function createLineChart
+     */
     createLineChart() {
         const data = this.props.items;
         const svgWidth = 800, svgHeight = 400;

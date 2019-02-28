@@ -3,11 +3,16 @@ import dateFormat from 'dateformat';
 import {API_BASE_URL} from "../../common/constants";
 import {toast} from 'react-toastify';
 
-/**
+/** Represents the modifiable html table component.
  * @class StatsTable
- * @summary Represents the modifiable html table component.
+ * @extends Component
  * */
 export default class StatsTable extends Component {
+    /**
+     * Initialize the props items with stocks
+     * @constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +23,7 @@ export default class StatsTable extends Component {
     /**
      * Enable input and focus into it
      * @function enableInput
-     * @param event
+     * @param {object} event - representing the input selected
      */
     enableInput(event) {
         event.target.disabled = false;
@@ -28,7 +33,8 @@ export default class StatsTable extends Component {
     /**
      * Update stocks value when you leave the input and disabled all the input (initial state)
      * @function handleMouseLeave
-     * @param event
+     * @param {object} event - representing the input selected
+     * @param {string} index - representing the index of the stock selected
      */
     handleMouseLeave(event, index) {
         this.updateStock(index);
@@ -38,7 +44,7 @@ export default class StatsTable extends Component {
     /**
      * Update the stock value with a put to our node server
      * @function updateStock
-     * @param index
+     * @param {string} index - representing the index of the stock selected
      */
     updateStock(index) {
         const selectedItem = this.state.items.find(res => res.id === index);
@@ -72,8 +78,8 @@ export default class StatsTable extends Component {
     /**
      * Update the value of the new stock in the local state and emit an event to the parent
      * @function changeItem
-     * @param event
-     * @param id
+     * @param {object} event - representing the input selected
+     * @param {string} id - representing the index of the stock selected
      */
     changeItem(event, id) {
         // we get the state items and modify the item
