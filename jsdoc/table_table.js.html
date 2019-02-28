@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: table/table.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: table/table.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {Component} from 'react';
+import dateFormat from 'dateformat';
+import {API_BASE_URL} from "../../common/constants";
+import {toast} from 'react-toastify';
+
+/** Represents the modifiable html table component.
+ * @class StatsTable
+ * @extends Component
+ * */
+export default class StatsTable extends Component {
+    /**
+     * Initialize the props items with stocks
+     * @constructor
+     * @param props
+     */
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: this.props.items
+        };
+    }
+
+    /**
+     * Enable input and focus into it
+     * @function enableInput
+     * @param {object} event - representing the input selected
+     */
+    enableInput(event) {
+        event.target.disabled = false;
+        event.target.focus();
+    }
+
+    /**
+     * Update stocks value when you leave the input and disabled all the input (initial state)
+     * @function handleMouseLeave
+     * @param {object} event - representing the input selected
+     * @param {string} index - representing the index of the stock selected
+     */
+    handleMouseLeave(event, index) {
+        this.updateStock(index);
+        document.querySelectorAll('.transparentInput').forEach(e => e.disabled = true);
+    }
+
+    /**
+     * Update the stock value with a put to our node server
+     * @function updateStock
+     * @param {string} index - representing the index of the stock selected
+     */
+    updateStock(index) {
+        const selectedItem = this.state.items.find(res => res.id === index);
+        fetch(API_BASE_URL + "/stocks/" + selectedItem.id,
+            {
+                mode: 'cors',
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: selectedItem.id,
+                    timestamp: selectedItem.date,
+                    stocks: selectedItem.value,
+                })
+            }).then(res => {
+                toast.success('Stock enregistrée avec succès : ', {
+                    position: toast.POSITION.TOP_CENTER,
+                });
+            // if update was successful, leave the input
+        }).catch(err => {
+            console.log(err);
+            toast.error('Error updating stock ! ', {
+                position: toast.POSITION.TOP_LEFT
+            });
+            }
+        );
+    }
+
+    /**
+     * Update the value of the new stock in the local state and emit an event to the parent
+     * @function changeItem
+     * @param {object} event - representing the input selected
+     * @param {string} id - representing the index of the stock selected
+     */
+    changeItem(event, id) {
+        // we get the state items and modify the item
+        const newItems = this.state.items.map(item => {
+            if (item.id === id) {
+                return {
+                    date: item.date,
+                    id: item.id,
+                    value: event.target.value
+                };
+            } else {
+                return item;
+            }
+        });
+        this.setState({items: newItems});
+
+        //this instruction will emit event to the parent and pass the new array of stocks
+        this.props.onTableStocksChange(newItems);
+    }
+
+    /**
+     * Build the html table with stock items stored in the local state
+     * @function buildHtmlTable
+     */
+    buildHtmlTable() {
+        return this.state.items.map((itm) => {
+            const i = itm.id;
+            return (
+                &lt;tr key={"ln" + i}>
+                    &lt;td>{dateFormat(itm.date, "dd/mm/yyyy")}&lt;/td>
+                    &lt;td onClick={(e) => {this.enableInput(e)}}>
+                        &lt;input type="number"
+                               key={"i" + i}
+                               value={itm.value}
+                               className="transparentInput"
+                               ref={(key) => this[i] = key}
+                               onChange={(e) => {
+                                   this.changeItem(e, i)
+                               }}
+                               onBlur={(e) => {
+                                   this.handleMouseLeave(e, i);
+                               }}
+                               disabled
+                        />
+                    &lt;/td>
+                &lt;/tr>
+            )
+        });
+    }
+
+    render() {
+        return &lt;table className="table table-striped table-sm">
+            &lt;thead>
+            &lt;tr>
+                &lt;th key="thDate">Date&lt;/th>
+                &lt;th key="thStocks">Stocks&lt;/th>
+            &lt;/tr>
+            &lt;/thead>
+            &lt;tbody>
+            {this.buildHtmlTable()}
+            &lt;/tbody>
+        &lt;/table>;
+    }
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Chart.html">Chart</a></li><li><a href="StatsTable.html">StatsTable</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildHtmlTable">buildHtmlTable</a></li><li><a href="global.html#changeItem">changeItem</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#componentDidUpdate">componentDidUpdate</a></li><li><a href="global.html#createLineChart">createLineChart</a></li><li><a href="global.html#enableInput">enableInput</a></li><li><a href="global.html#getStock">getStock</a></li><li><a href="global.html#handleMouseLeave">handleMouseLeave</a></li><li><a href="global.html#handleTableStocksChange">handleTableStocksChange</a></li><li><a href="global.html#updateStock">updateStock</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Feb 28 2019 17:28:07 GMT+0100 (Paris, Madrid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
