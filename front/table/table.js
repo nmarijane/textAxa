@@ -5,8 +5,7 @@ import {toast} from 'react-toastify';
 
 /**
  * @class StatsTable
- * @description Represents the modifiable table component.
- * @requires Requires stock items in the props to work properly
+ * @summary Represents the modifiable html table component.
  * */
 export default class StatsTable extends Component {
     constructor(props) {
@@ -16,20 +15,34 @@ export default class StatsTable extends Component {
         };
     }
 
-    turnIntoInput(event) {
+    /**
+     * Enable input and focus into it
+     * @function enableInput
+     * @param event
+     */
+    enableInput(event) {
         event.target.disabled = false;
         event.target.focus();
     }
 
+    /**
+     * Update stocks value when you leave the input and disabled all the input (initial state)
+     * @function handleMouseLeave
+     * @param event
+     */
     handleMouseLeave(event, index) {
-        console.log(index);
-            this.updateStock(index, event.target);
+        this.updateStock(index);
+        document.querySelectorAll('.transparentInput').forEach(e => e.disabled = true);
     }
 
-
-    updateStock(index, input) {
-        const item = this.state.items.find(res => res.id === index);
-        fetch(API_BASE_URL + "/stocks/" + item.id,
+    /**
+     * Update the stock value with a put to our node server
+     * @function updateStock
+     * @param index
+     */
+    updateStock(index) {
+        const selectedItem = this.state.items.find(res => res.id === index);
+        fetch(API_BASE_URL + "/stocks/" + selectedItem.id,
             {
                 mode: 'cors',
                 method: 'PUT',
@@ -38,9 +51,9 @@ export default class StatsTable extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    id: item.id,
-                    timestamp: item.date,
-                    stocks: item.value,
+                    id: selectedItem.id,
+                    timestamp: selectedItem.date,
+                    stocks: selectedItem.value,
                 })
             }).then(res => {
                 toast.success('Stock enregistrée avec succès : ', {
@@ -57,8 +70,10 @@ export default class StatsTable extends Component {
     }
 
     /**
-     * @function change the value of the selected item and store it into the local state
-     * @returns void
+     * Update the value of the new stock in the local state and emit an event to the parent
+     * @function changeItem
+     * @param event
+     * @param id
      */
     changeItem(event, id) {
         // we get the state items and modify the item
@@ -80,16 +95,16 @@ export default class StatsTable extends Component {
     }
 
     /**
-     * @function Build the html table with stocks stored in the local state
-     * @returns {string}
+     * Build the html table with stock items stored in the local state
+     * @function buildHtmlTable
      */
     buildHtmlTable() {
         return this.state.items.map((itm) => {
             const i = itm.id;
             return (
-                <tr key={"ln" + i} onClick={(e) => {this.turnIntoInput(e, i)}}>
+                <tr key={"ln" + i}>
                     <td>{dateFormat(itm.date, "dd/mm/yyyy")}</td>
-                    <td>
+                    <td onClick={(e) => {this.enableInput(e)}}>
                         <input type="number"
                                key={"i" + i}
                                value={itm.value}
