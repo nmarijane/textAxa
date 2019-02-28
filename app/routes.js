@@ -1,40 +1,9 @@
 import express from "express";
 import {green} from "../common/constants";
 import {getStocks, updateStock} from "../back/stock.controller";
-import cache from "memory-cache";
+import {stocksCacheId, memCache, cacheMiddleware} from "../back/cache.service";
 
 const appRouter = express.Router();
-
-/***********************/
-/****CACHE MIDDLEWARE***/
-/***********************/
-/**
- * @describe('cacheMiddleware', function() {
-   Use to store in cache memory
- });
- * @type {Cache}
- */
-let memCache = new cache.Cache();
-let cacheMiddleware = (duration, keyId) => {
-    return (req, res, next) => {
-        let key = keyId;
-        let cacheContent = memCache.get(key);
-        if(cacheContent){
-            console.log('Cache used');
-            res.send( cacheContent );
-        }else{
-            res.sendResponse = res.send;
-            res.send = (body) => {
-                memCache.put(key,body,duration*1000);
-                res.sendResponse(body)
-            };
-            next()
-        }
-    }
-};
-
-//key of the stock cache get request
-const stocksCacheId = 'stocksCache';
 
 /***********************/
 /****   APP ROUTES   ***/
