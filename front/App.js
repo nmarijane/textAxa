@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import StatsTable from "./table/table";
-import Chart from "./chart/chart";
 import {API_BASE_URL, MESSAGES} from "../common/constants";
 import {toast, ToastContainer} from 'react-toastify';
 
@@ -16,21 +15,11 @@ export default class App extends Component {
      */
     constructor(props) {
         super(props);
-        this.handleTableStocksChange = this.handleTableStocksChange.bind(this);
         this.state = {
             error: null,
             isLoaded: false,
             items: []
         };
-    }
-
-    /**
-     * Enable input and focus into it
-     * @function handleTableStocksChange
-     * @param {object[]} items - array of stocks
-     */
-    handleTableStocksChange(items) {
-        this.setState({items: items});
     }
 
     /**
@@ -81,8 +70,7 @@ export default class App extends Component {
             content = <div className="loading">{MESSAGES.LOADING}</div>;
         } else {
             content = <div className="text-center">
-                <Chart items={items}/>
-                <StatsTable items={items} onTableStocksChange={this.handleTableStocksChange}/>
+                <StatsTable items={items} callbackStocksChange={this.handleTableStocksChange}/>
             </div>;
         }
         return <div>

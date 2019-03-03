@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import dateFormat from 'dateformat';
 import {API_BASE_URL} from "../../common/constants";
 import {toast} from 'react-toastify';
+import Chart from "../chart/chart";
 
 /** Represents the modifiable html table component.
  * @class StatsTable
@@ -95,9 +96,6 @@ export default class StatsTable extends Component {
             }
         });
         this.setState({items: newItems});
-
-        //this instruction will emit event to the parent and pass the new array of stocks
-        this.props.onTableStocksChange(newItems);
     }
 
     /**
@@ -131,7 +129,8 @@ export default class StatsTable extends Component {
     }
 
     render() {
-        return <table className="table table-striped table-sm">
+        return <div><Chart items={this.state.items}/>
+        <table className="table table-striped table-sm">
             <thead>
             <tr>
                 <th key="thDate">Date</th>
@@ -141,7 +140,7 @@ export default class StatsTable extends Component {
             <tbody>
             {this.buildHtmlTable()}
             </tbody>
-        </table>;
+        </table></div>;
     }
 
 }
