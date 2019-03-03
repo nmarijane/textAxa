@@ -70,7 +70,7 @@ export default class App extends Component {
             content = <div className="loading">{MESSAGES.LOADING}</div>;
         } else {
             content = <div className="text-center">
-                <StatsTable items={items} callbackStocksChange={this.handleTableStocksChange}/>
+                <StatsTable items={items}/>
             </div>;
         }
         return <div>

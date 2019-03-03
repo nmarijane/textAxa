@@ -16,6 +16,11 @@ Run third party API (required)
 npm run start-api
 ```
 
+Run test
+```
+npm test
+```
+
 DEMO & FEATURES
 ```
 - You can see a chart representing the value of stocks
