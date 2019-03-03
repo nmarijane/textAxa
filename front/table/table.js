@@ -85,15 +85,10 @@ export default class StatsTable extends Component {
     changeItem(event, id) {
         // we get the state items and modify the item
         const newItems = this.state.items.map(item => {
-            if (item.id === id) {
-                return {
-                    date: item.date,
-                    id: item.id,
-                    value: event.target.value
-                };
-            } else {
-                return item;
-            }
+            return item.id === id ? {
+                ...item,
+                value: event.target.value
+            } : item
         });
         this.setState({items: newItems});
     }

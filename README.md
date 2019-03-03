@@ -21,6 +21,8 @@ Run test
 npm test
 ```
 
+JSDOC is in the root project
+
 DEMO & FEATURES
 ```
 - You can see a chart representing the value of stocks

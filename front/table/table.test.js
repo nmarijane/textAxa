@@ -30,8 +30,9 @@ describe('Table test', () => {
         const input = wrapper.find('input').at(0);
         input.simulate('click');
         input.simulate('focus');
-        input.simulate('change', { target: { value: 0 } });
-        input.simulate('onBlur', );
+        input.simulate('change', { target: { value: 99 } });
+        input.simulate('onBlur');
+        expect(input.props().value).toBe('Hello');
         done();
     });
 });
